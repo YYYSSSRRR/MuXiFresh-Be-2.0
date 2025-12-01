@@ -1,16 +1,15 @@
 package submitted
 
 import (
+	"context"
+	"errors"
+
 	"MuXiFresh-Be-2.0/app/task/cmd/api/internal/svc"
 	"MuXiFresh-Be-2.0/app/task/cmd/api/internal/types"
 	"MuXiFresh-Be-2.0/app/task/cmd/rpc/submission/submissionclient"
 	"MuXiFresh-Be-2.0/app/user/cmd/rpc/user/userclient"
 	"MuXiFresh-Be-2.0/common/ctxData"
 	"MuXiFresh-Be-2.0/common/globalKey"
-	"context"
-	"errors"
-	"github.com/jinzhu/copier"
-
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -54,7 +53,13 @@ func (l *GetSubmissionInfoLogic) GetSubmissionInfo(req *types.GetSubmissionInfoR
 		return nil, err
 	}
 	var submissioninfos []types.SubmissionInfo
-	copier.Copy(&submissioninfos, &getSubmissionInfoResp.SubmissionInfos)
+	for _, info := range getSubmissionInfoResp.SubmissionInfos {
+		submissioninfos = append(submissioninfos, types.SubmissionInfo{
+			SubmissionID: info.SubmissionID,
+			Urls:         info.Urls,
+			Time:         info.Time,
+		})
+	}
 	return &types.GetSubmissionInfoResp{
 		SubmissionInfos: submissioninfos,
 	}, nil

@@ -43,6 +43,7 @@ type (
 	SubmissionInfo {
 		SubmissionID string   `json:"submission_id"`
 		Urls         []string `json:"urls"`
+		Time         string   `json:"time"`
 	}
 )
 

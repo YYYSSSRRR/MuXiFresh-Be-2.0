@@ -33,6 +33,7 @@ message GetSubmissionInfoResp{
 message SubmissionInfo{
   string SubmissionID  = 1;
   repeated string Urls = 2;
+  string Time=3;
 }
 //all status
 message GetAllSubmissionStatusReq{
