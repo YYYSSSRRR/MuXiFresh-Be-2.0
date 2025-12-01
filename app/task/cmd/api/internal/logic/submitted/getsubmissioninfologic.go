@@ -10,6 +10,7 @@ import (
 	"MuXiFresh-Be-2.0/app/user/cmd/rpc/user/userclient"
 	"MuXiFresh-Be-2.0/common/ctxData"
 	"MuXiFresh-Be-2.0/common/globalKey"
+	"github.com/jinzhu/copier"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -53,13 +54,7 @@ func (l *GetSubmissionInfoLogic) GetSubmissionInfo(req *types.GetSubmissionInfoR
 		return nil, err
 	}
 	var submissioninfos []types.SubmissionInfo
-	for _, info := range getSubmissionInfoResp.SubmissionInfos {
-		submissioninfos = append(submissioninfos, types.SubmissionInfo{
-			SubmissionID: info.SubmissionID,
-			Urls:         info.Urls,
-			Time:         info.Time,
-		})
-	}
+	copier.Copy(&submissioninfos, &getSubmissionInfoResp.SubmissionInfos)
 	return &types.GetSubmissionInfoResp{
 		SubmissionInfos: submissioninfos,
 	}, nil
