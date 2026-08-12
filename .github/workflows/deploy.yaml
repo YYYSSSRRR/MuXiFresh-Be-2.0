@@ -13,6 +13,7 @@ on:
       - 'app/test/**'
       - 'app/user/**'
       - 'app/userauth/**'
+      - 'app/gateway/**'
       - 'common/**'
       - 'go.mod'
       - 'go.sum'
@@ -58,6 +59,7 @@ jobs:
             test
             user
             userauth
+            gateway
           )
 
           if [[ "$BEFORE_SHA" =~ ^0+$ ]] || ! git cat-file -e "${BEFORE_SHA}^{commit}" 2>/dev/null; then
@@ -185,6 +187,11 @@ jobs:
               mkdir -p app/userauth/cmd/rpc/accountCenter/etc app/userauth/cmd/api/etc
               : > app/userauth/cmd/rpc/accountCenter/etc/accountCenter.yaml
               : > app/userauth/cmd/api/etc/user-auth.yaml
+              ;;
+            gateway)
+              go build -o app/gateway/gateway ./app/gateway
+              mkdir -p app/gateway/etc
+              : > app/gateway/etc/gateway.yaml
               ;;
             *)
               echo "Unsupported service: $SERVICE" >&2
